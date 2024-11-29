@@ -9,6 +9,7 @@ Player::Player(GameMechs* thisGMRef)
     // more actions to be included 
     playerPos.symbol = '*';
     //Make it start in the center
+    playerPos.pos = new Pos();
     playerPos.pos->x = mainGameMechsRef->getBoardSizeX() / 2;
     playerPos.pos->y = mainGameMechsRef->getBoardSizeY() / 2;
 }
@@ -87,34 +88,34 @@ void Player::movePlayer()
     // PPA3 Finite State Machine logic
     if(myDir == LEFT)
     {
-        playerPos.pos->y--;
-        if (playerPos.pos->y== 0)
+        playerPos.pos->x--;
+        if (playerPos.pos->x== 0)
         {
-            playerPos.pos->y= mainGameMechsRef->getBoardSizeY() - 2;
+            playerPos.pos->x= mainGameMechsRef->getBoardSizeX() - 2;
         }
     }
     else if(myDir == RIGHT)
-    {
-        playerPos.pos->y++;
-        if (playerPos.pos->y == mainGameMechsRef->getBoardSizeY() - 1)
-        {
-            playerPos.pos->y = 1;
-        }
-    }
-    else if(myDir == UP)
-    {
-        playerPos.pos->x--;
-        if (playerPos.pos->x == 0)
-        {
-            playerPos.pos->x = mainGameMechsRef->getBoardSizeX() - 2;
-        }
-    }
-    else if(myDir == DOWN)
     {
         playerPos.pos->x++;
         if (playerPos.pos->x == mainGameMechsRef->getBoardSizeX() - 1)
         {
             playerPos.pos->x = 1;
+        }
+    }
+    else if(myDir == UP)
+    {
+        playerPos.pos->y--;
+        if (playerPos.pos->y == 0)
+        {
+            playerPos.pos->y = mainGameMechsRef->getBoardSizeY() - 2;
+        }
+    }
+    else if(myDir == DOWN)
+    {
+        playerPos.pos->y++;
+        if (playerPos.pos->y == mainGameMechsRef->getBoardSizeY() - 1)
+        {
+            playerPos.pos->y = 1;
         }
     }
     else if(myDir == STOP)
