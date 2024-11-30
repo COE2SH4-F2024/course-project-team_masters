@@ -20,8 +20,8 @@ void Food::generateFood(objPos blockOff)
 {
     do
     {
-        foodPos.pos->x = (rand() %mainGameMechsRef->getBoardSizeX()) + 1;
-        foodPos.pos->y = (rand() %mainGameMechsRef->getBoardSizeY()) + 1;
+        foodPos.pos->x = 1 + (rand() % (mainGameMechsRef->getBoardSizeX() - 2));
+        foodPos.pos->y = 1 + (rand() % (mainGameMechsRef->getBoardSizeY() - 2));
     } while (blockOff.pos == foodPos.pos);
     
 }
