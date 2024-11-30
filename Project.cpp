@@ -3,6 +3,7 @@
 #include "objPos.h"
 #include "Player.h"
 #include "GameMechs.h"
+#include "Food.h"
 
 using namespace std;
 
@@ -19,6 +20,7 @@ void CleanUp(void);
 
 Player* myPlayer;
 GameMechs* myGM;
+Food* myFood;
 
 
 int main(void)
@@ -44,8 +46,12 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
+    srand(time(NULL));
+
     myGM = new GameMechs();
     myPlayer = new Player(myGM);
+    myFood = new Food(myGM);
+    myFood->generateFood(myPlayer->getPlayerPos());
     exitFlag = false;
 }
 
@@ -64,6 +70,8 @@ void DrawScreen(void)
     MacUILib_clearScreen();   
 
     objPos playerPos = myPlayer->getPlayerPos();
+    objPos foodPos = myFood->getFoodPos();
+
 
     MacUILib_printf("Player [x,y] = [%d, %d] %c" , playerPos.pos->x , playerPos.pos->y , playerPos.symbol); 
     MacUILib_printf("\n");
@@ -80,6 +88,10 @@ void DrawScreen(void)
             else if(i == playerPos.pos->y && j == playerPos.pos->x)
             {
                 MacUILib_printf("%c", playerPos.symbol);
+            }
+            else if(i == foodPos.pos->y && j == foodPos.pos->x)
+            {
+                MacUILib_printf("%c", foodPos.symbol);
             }
             else
             {
@@ -101,5 +113,7 @@ void CleanUp(void)
     MacUILib_clearScreen();    
 
     delete myPlayer;
+    delete myFood;
+    delete myGM;
     MacUILib_uninit();
 }
