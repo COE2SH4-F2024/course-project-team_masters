@@ -6,7 +6,7 @@ Food::Food(GameMechs* thisGMRef)
 
     foodPos.symbol = 'o';
 
-    foodPos.pos = new Pos;
+    
     foodPos.pos->x = -10;
     foodPos.pos->y = -10;
 }
@@ -14,7 +14,6 @@ Food::Food(GameMechs* thisGMRef)
 Food::~Food()
 {
     // delete heap members
-    delete foodPos.pos;
 }
 
 void Food::generateFood(objPos blockOff)
