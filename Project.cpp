@@ -58,6 +58,10 @@ void Initialize(void)
 void GetInput(void)
 {
     myPlayer->updatePlayerDir();
+    if(myGM->getExitFlagStatus() == true)
+    {
+        exitFlag = true;
+    }
 }
 
 void RunLogic(void)
