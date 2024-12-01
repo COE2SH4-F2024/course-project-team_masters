@@ -71,8 +71,6 @@ void RunLogic(void)
     if(myPlayer->checkFoodConsumption() == true)
     {
         myPlayer->increasePlayerLength();
-        myFood->generateFood(myPlayer->getPlayerPos());
-        myGM->incrementScore();
     }
 }
 
@@ -113,6 +111,8 @@ void DrawScreen(void)
     }
     MacUILib_printf("\n");
     MacUILib_printf("Current Score: %d" , myGM->getScore());
+
+    
 }
 
 void LoopDelay(void)
@@ -124,7 +124,11 @@ void LoopDelay(void)
 void CleanUp(void)
 {
     MacUILib_clearScreen();    
-
+    //Lose message
+    if(myGM->getLoseFlagStatus() == true)
+    {
+        MacUILib_printf("You Lost :( ... Final Score: %d" , myGM->getScore());
+    }
     delete myPlayer;
     delete myFood;
     delete myGM;

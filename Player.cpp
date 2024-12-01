@@ -86,10 +86,10 @@ void Player::updatePlayerDir()
 
 void Player::movePlayer()
 {
-    // PPA3 Finite State Machine logic
-
+    //Init temp variable to hold next position
     objPos temp = playerPosList->getHeadElement();
 
+    //Find next head element position
     if(myDir == LEFT)
     {
         temp.pos->x--;
@@ -123,11 +123,24 @@ void Player::movePlayer()
         }
     }
 
-    if(myDir != STOP)
+    //Self collision check
+    for(int i = 1; i < playerPosList->getSize(); i++)
+    {
+        if(temp.pos->x == playerPosList->getElement(i).pos->x && temp.pos->y == playerPosList->getElement(i).pos->y)
+        {
+            mainGameMechsRef->setLoseFlag();
+            mainGameMechsRef->setExitTrue();
+        }
+    }
+
+    //Swapping head and tail elements
+    if(myDir != STOP && mainGameMechsRef->getLoseFlagStatus() != true)
     {
         playerPosList->insertHead(temp);
         playerPosList->removeTail();//change once we do colission stuff
     }
+
+    
     
 }
 
@@ -171,4 +184,6 @@ void Player::increasePlayerLength()
     objPos object;
     object.symbol = '*';
     playerPosList->insertTail(object);
+    mainGameMechsRef->incrementScore();
+    mainFoodRef->generateFood(playerPosList);
 }
