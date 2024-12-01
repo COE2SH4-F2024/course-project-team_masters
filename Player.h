@@ -34,6 +34,8 @@ class Player
         bool checkFoodConsumption();
         void increasePlayerLength();
 
+        bool checkSelfCollision(const objPos& temp);
+
     private:
         objPosArrayList* playerPosList; // Upgrade this in iteration 3.       
         enum Dir myDir;

@@ -123,25 +123,20 @@ void Player::movePlayer()
         }
     }
 
-    //Self collision check
-    for(int i = 1; i < playerPosList->getSize(); i++)
+    if (checkSelfCollision(temp))
     {
-        if(temp.pos->x == playerPosList->getElement(i).pos->x && temp.pos->y == playerPosList->getElement(i).pos->y)
-        {
-            mainGameMechsRef->setLoseFlag();
-            mainGameMechsRef->setExitTrue();
-        }
+        // If collision is detected
+        mainGameMechsRef->setLoseFlag();
+        mainGameMechsRef->setExitTrue();
+        return;
     }
 
-    //Swapping head and tail elements
-    if(myDir != STOP && mainGameMechsRef->getLoseFlagStatus() != true)
+    // When a movement key is pressed, add a symbol based from the movement; similar to remove
+    if (myDir != STOP && mainGameMechsRef->getLoseFlagStatus() != true)
     {
         playerPosList->insertHead(temp);
-        playerPosList->removeTail();//change once we do colission stuff
+        playerPosList->removeTail();
     }
-
-    
-    
 }
 
 // More methods to be added
@@ -186,4 +181,16 @@ void Player::increasePlayerLength()
     playerPosList->insertTail(object);
     mainGameMechsRef->incrementScore();
     mainFoodRef->generateFood(playerPosList);
+}
+
+bool Player::checkSelfCollision(const objPos& temp)
+{
+    for (int i = 1; i < playerPosList->getSize(); i++)  
+    {
+        if (temp.pos->x == playerPosList->getElement(i).pos->x && temp.pos->y == playerPosList->getElement(i).pos->y)
+        {
+            return true;  // Collision detected
+        }
+    }
+    return false;  // No collision
 }
