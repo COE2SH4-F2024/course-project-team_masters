@@ -16,13 +16,24 @@ Food::~Food()
     // delete heap members
 }
 
-void Food::generateFood(objPos blockOff)
+void Food::generateFood(objPosArrayList* blockOff)
 {
+    bool taken = true;
     do
     {
         foodPos.pos->x = 1 + (rand() % (mainGameMechsRef->getBoardSizeX() - 2));
         foodPos.pos->y = 1 + (rand() % (mainGameMechsRef->getBoardSizeY() - 2));
-    } while (blockOff.pos == foodPos.pos);
+
+        for(int i = 0; i < blockOff->getSize(); i++)
+        {
+            if(foodPos.pos->x == blockOff->getElement(i).pos->x && foodPos.pos->y == blockOff->getElement(i).pos->y)
+            {
+                taken = true;
+                break;
+            }
+            taken = false;
+        }
+    } while (taken == true);
     
 }
 

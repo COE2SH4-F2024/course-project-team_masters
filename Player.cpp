@@ -1,28 +1,30 @@
 #include "Player.h"
 
 
-Player::Player(GameMechs* thisGMRef)
+Player::Player(GameMechs* thisGMRef, Food* thisFoodRef)
 {
+    mainFoodRef = thisFoodRef;
     mainGameMechsRef = thisGMRef;
     myDir = STOP;
 
     // more actions to be included 
-    playerPos.symbol = '*';
+    playerPosList = new objPosArrayList();
     //Make it start in the center
-    playerPos.pos->x = mainGameMechsRef->getBoardSizeX() / 2;
-    playerPos.pos->y = mainGameMechsRef->getBoardSizeY() / 2;
+    objPos headPos(mainGameMechsRef->getBoardSizeX() / 2 ,mainGameMechsRef->getBoardSizeY() / 2 , '*');
+    playerPosList->insertHead(headPos);
 }
 
 
 Player::~Player()
 {
     // delete any heap members here
+    delete playerPosList;
 }
 
-objPos Player::getPlayerPos() const
+objPosArrayList* Player::getPlayerPos() const
 {
     // return the reference to the playerPos arrray list
-    return playerPos;
+    return playerPosList;
 
 }
 
@@ -85,42 +87,88 @@ void Player::updatePlayerDir()
 void Player::movePlayer()
 {
     // PPA3 Finite State Machine logic
+
+    objPos temp = playerPosList->getHeadElement();
+
     if(myDir == LEFT)
     {
-        playerPos.pos->x--;
-        if (playerPos.pos->x== 0)
+        temp.pos->x--;
+        if (temp.pos->x== 0)
         {
-            playerPos.pos->x= mainGameMechsRef->getBoardSizeX() - 2;
+            temp.pos->x= mainGameMechsRef->getBoardSizeX() - 2;
         }
     }
     else if(myDir == RIGHT)
     {
-        playerPos.pos->x++;
-        if (playerPos.pos->x == mainGameMechsRef->getBoardSizeX() - 1)
+        temp.pos->x++;
+        if (temp.pos->x == mainGameMechsRef->getBoardSizeX() - 1)
         {
-            playerPos.pos->x = 1;
+            temp.pos->x = 1;
         }
     }
     else if(myDir == UP)
     {
-        playerPos.pos->y--;
-        if (playerPos.pos->y == 0)
+        temp.pos->y--;
+        if (temp.pos->y == 0)
         {
-            playerPos.pos->y = mainGameMechsRef->getBoardSizeY() - 2;
+            temp.pos->y = mainGameMechsRef->getBoardSizeY() - 2;
         }
     }
     else if(myDir == DOWN)
     {
-        playerPos.pos->y++;
-        if (playerPos.pos->y == mainGameMechsRef->getBoardSizeY() - 1)
+        temp.pos->y++;
+        if (temp.pos->y == mainGameMechsRef->getBoardSizeY() - 1)
         {
-            playerPos.pos->y = 1;
+            temp.pos->y = 1;
         }
     }
-    else if(myDir == STOP)
+
+    if(myDir != STOP)
     {
-        //exit
+        playerPosList->insertHead(temp);
+        playerPosList->removeTail();//change once we do colission stuff
     }
+    
 }
 
 // More methods to be added
+
+bool Player::isPosInList(int xPos , int yPos)
+{
+    for(int i = 0; i < playerPosList->getSize(); i++)
+    {
+        if(playerPosList->getElement(i).pos->x == xPos && playerPosList->getElement(i).pos->y == yPos)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+char Player::getSymAtPos(int xPos , int yPos)
+{
+    for(int i = 0; i < playerPosList->getSize(); i++)
+    {
+        if(playerPosList->getElement(i).pos->x == xPos && playerPosList->getElement(i).pos->y == yPos)
+        {
+            return playerPosList->getElement(i).symbol;
+        }
+    }
+    return ' ';
+}
+
+bool Player::checkFoodConsumption()
+{
+    if(playerPosList->getHeadElement().getObjPos().pos->x == mainFoodRef->getFoodPos().pos->x && playerPosList->getHeadElement().getObjPos().pos->y == mainFoodRef->getFoodPos().pos->y)
+    {
+        return true;
+    }
+    return false;
+}
+
+void Player::increasePlayerLength()
+{
+    objPos object;
+    object.symbol = '*';
+    playerPosList->insertTail(object);
+}

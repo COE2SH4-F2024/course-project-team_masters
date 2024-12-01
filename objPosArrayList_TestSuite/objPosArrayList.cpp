@@ -70,6 +70,7 @@ void objPosArrayList::removeTail()
     listSize--;
 }
 
+
 objPos objPosArrayList::getHeadElement() const
 {
     return aList[0];
@@ -84,3 +85,4 @@ objPos objPosArrayList::getElement(int index) const
 {
     return aList[index];
 }
+
