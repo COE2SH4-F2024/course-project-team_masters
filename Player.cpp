@@ -167,9 +167,24 @@ char Player::getSymAtPos(int xPos , int yPos)
 
 bool Player::checkFoodConsumption()
 {
-    if(playerPosList->getHeadElement().getObjPos().pos->x == mainFoodRef->getFoodPos().pos->x && playerPosList->getHeadElement().getObjPos().pos->y == mainFoodRef->getFoodPos().pos->y)
+    for(int i = 0; i < mainFoodRef->getFoodPos()->getSize(); i++)
     {
-        return true;
+        if(playerPosList->getHeadElement().getObjPos().pos->x == mainFoodRef->getFoodPos()->getElement(i).pos->x && playerPosList->getHeadElement().getObjPos().pos->y == mainFoodRef->getFoodPos()->getElement(i).pos->y)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Player::checkSpecialFoodConsumption()
+{
+    for(int i = 0; i < mainFoodRef->getFoodPos()->getSize(); i++)
+    {
+        if(playerPosList->getHeadElement().getObjPos().pos->x == mainFoodRef->getFoodPos()->getElement(i).pos->x && playerPosList->getHeadElement().getObjPos().pos->y == mainFoodRef->getFoodPos()->getElement(i).pos->y && mainFoodRef->getFoodPos()->getElement(i).symbol == 'x')
+        {
+            return true;
+        }
     }
     return false;
 }
@@ -180,7 +195,19 @@ void Player::increasePlayerLength()
     object.symbol = '*';
     playerPosList->insertTail(object);
     mainGameMechsRef->incrementScore();
-    mainFoodRef->generateFood(playerPosList);
+    mainFoodRef->generateFood(playerPosList , (1 + rand() % 3));
+    mainFoodRef->generateSpecialFood(playerPosList);
+}
+
+void Player::specialIncrease()
+{
+    //Increase score by 20
+    for(int i = 0; i < 20; i++)
+    {
+        mainGameMechsRef->incrementScore();
+    }
+    mainFoodRef->generateFood(playerPosList , (1 + rand() % 3));
+    mainFoodRef->generateSpecialFood(playerPosList);
 }
 
 bool Player::checkSelfCollision(const objPos& temp)

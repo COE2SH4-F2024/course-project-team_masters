@@ -32,7 +32,9 @@ class Player
         char getSymAtPos(int xPos , int yPos);
 
         bool checkFoodConsumption();
+        bool checkSpecialFoodConsumption();
         void increasePlayerLength();
+        void specialIncrease();
 
         bool checkSelfCollision(const objPos& temp);
 

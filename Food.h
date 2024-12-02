@@ -5,17 +5,23 @@
 #include "objPos.h"
 #include "objPosArrayList.h"
 
+
 class Food
 {
     private:
-        objPos foodPos;
+        //objPos foodPos;
         GameMechs* mainGameMechsRef;
+        objPosArrayList* foodBucket;
     public:
         Food(GameMechs* mainGameMechsRef);
         ~Food();
 
-        void generateFood(objPosArrayList* blockOff);
-        objPos getFoodPos() const;
+        void generateFood(objPosArrayList* blockOff , int numFood);
+        void generateSpecialFood(objPosArrayList* blockOff);
+        objPosArrayList* getFoodPos() const;
+
+        bool isPosInList(int xPos , int yPos);
+        char getSymAtPos(int xPos , int yPos);
 };
 
 #endif

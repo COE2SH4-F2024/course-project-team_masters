@@ -52,7 +52,7 @@ void Initialize(void)
     myFood = new Food(myGM);
     myPlayer = new Player(myGM , myFood);
     
-    myFood->generateFood(myPlayer->getPlayerPos());
+    myFood->generateFood(myPlayer->getPlayerPos() , 3);
     exitFlag = false;
 }
 
@@ -70,7 +70,14 @@ void RunLogic(void)
     myPlayer->movePlayer();
     if(myPlayer->checkFoodConsumption() == true)
     {
-        myPlayer->increasePlayerLength();
+        if(myPlayer->checkSpecialFoodConsumption() == true)
+        {
+            myPlayer->specialIncrease();
+        }
+        else
+        {
+            myPlayer->increasePlayerLength();
+        }
     }
 }
 
@@ -79,7 +86,7 @@ void DrawScreen(void)
     MacUILib_clearScreen();   
 
    
-    objPos foodPos = myFood->getFoodPos();
+    //objPos foodPos = myFood->getFoodPos();
 
 
     //MacUILib_printf("Player [x,y] = [%d, %d] %c" , playerPos.pos->x , playerPos.pos->y , playerPos.symbol); 
@@ -98,9 +105,9 @@ void DrawScreen(void)
             {
                 MacUILib_printf("%c", myPlayer->getSymAtPos(j,i));
             }
-            else if(i == foodPos.pos->y && j == foodPos.pos->x)
+            else if(myFood->isPosInList(j,i) == true)
             {
-                MacUILib_printf("%c", foodPos.symbol);
+                MacUILib_printf("%c", myFood->getSymAtPos(j,i));
             }
             else
             {
