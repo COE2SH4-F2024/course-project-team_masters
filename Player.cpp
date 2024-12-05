@@ -201,7 +201,7 @@ void Player::increasePlayerLength()
 
 void Player::specialIncrease()
 {
-    //Increase score by 20
+    //Increase score by 20 without increasing length
     for(int i = 0; i < 20; i++)
     {
         mainGameMechsRef->incrementScore();
